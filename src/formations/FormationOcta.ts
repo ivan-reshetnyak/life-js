@@ -17,17 +17,17 @@ export class FormationOcta extends Formation {
         function( cell: Cell ): State {
           if (cell.isAlive() && cell.numOfAliveNeighbours() < 2)
             return State.Dead;
-            return State.Alive;
+          return cell.nextState;
         },
         function( cell: Cell ): State {
           if (cell.isAlive() && cell.numOfAliveNeighbours() > 3)
             return State.Dead;
-          return State.Alive;
+          return cell.nextState;
         },
         function( cell: Cell ): State {
           if (!cell.isAlive() && cell.numOfAliveNeighbours() == 3)
             return State.Alive;
-          return State.Dead;
+          return cell.nextState;
         }
       ];
 
@@ -43,24 +43,30 @@ export class FormationOcta extends Formation {
         }
   }
 
-  exists( X: number, Y: number ): boolean {
-    return 0 <= X && this.sizeX > X && 0 <= Y && this.sizeY > Y;
+  exists( x: number, y: number ): boolean {
+    return 0 <= x && this.sizeX > x && 0 <= y && this.sizeY > y;
   }
 
-  lookup( X: number, Y: number ): Cell {
-    return this.cells[Y * this.sizeX + X];
+  lookup( x: number, y: number ): Cell {
+    return this.cells[y * this.sizeX + x];
+  }
+
+  set( x: number, y: number, state: State ): void {
+    this.lookup(x, y).currentState = state;
+    this.lookup(x, y).nextState = state;
   }
 
   render(): string {
     let result: string = "";
     for (let y = 0; y < this.sizeY; ++y) {
-      result += "<p>"
+      //result += "<p>"
       for (let x = 0; x < this.sizeX; ++x)
         if (this.lookup(x, y).isAlive())
           result += "1";
         else
           result += "0";
-      result += "</p>"
+      //result += "</p>"
+      result += "\n"
     }
     return result;
   }
@@ -74,5 +80,17 @@ export class FormationOcta extends Formation {
       function( cell ): void {
         cell.advanceState();
       });
+  }
+
+  randomize(): void {
+    this.cells.forEach(
+      function( cell ): void {
+        let rnd: number = Math.random();
+        if (rnd < 0.5)
+          cell.currentState = State.Alive;
+        else
+          cell.currentState = State.Dead;
+      }
+    )
   }
 }

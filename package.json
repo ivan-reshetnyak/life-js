@@ -2,16 +2,14 @@
   "name": "life",
   "version": "0.0.1",
   "description": "Test task for Yandex Dzen",
-  "main": "build/Server.js",
+  "main": "build/main.js",
   "dependencies": {
-    "@types/express": "^4.17.9",
-    "express": "^4.17.1",
     "typescript": "^4.1.3"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node build/Server.js",
+    "start": "npm run tsc && node build/main.js",
     "tsc": "tsc"
   },
   "repository": {

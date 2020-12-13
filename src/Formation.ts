@@ -3,6 +3,9 @@ export class Formation {
     return "<p>This formation does not support rendering!</p>";
   }
 
+  randomize(): void {
+  }
+
   update(): void {
   }
 }
