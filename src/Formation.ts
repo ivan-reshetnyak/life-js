@@ -1,11 +1,14 @@
 export class Formation {
   render(): string {
-    return "<p>This formation does not support rendering!</p>";
+    return "This formation does not support rendering!";
   }
 
   randomize(): void {
   }
 
   update(): void {
+  }
+
+  read( filename: string ): void {
   }
 }

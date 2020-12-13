@@ -3,8 +3,8 @@ import { State } from "./Cell";
 import { FormationOcta } from "./formations/FormationOcta";
 
 let formation: Formation = new FormationOcta(10, 10);
-formation.randomize();
-
+//formation.randomize();
+formation.read("in/1.txt");
 /*
 let formation: FormationOcta = new FormationOcta(4, 5);
 formation.set(1, -1, State.Alive);
