@@ -121,6 +121,11 @@ export class FormationOcta extends Formation {
         this.cells.push(new Cell(State.Dead, FormationOcta.ruleset));
       else if (c == '1')
         this.cells.push(new Cell(State.Alive, FormationOcta.ruleset));
+
+    while (this.cells.length < this.sizeX * this.sizeY)
+      this.cells.push(new Cell(State.Dead, FormationOcta.ruleset));
+    if (this.cells.length > this.sizeX * this.sizeY)
+    this.cells.length = this.sizeX * this.sizeY;
     this.link();
   }
 }
