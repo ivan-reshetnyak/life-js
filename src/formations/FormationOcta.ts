@@ -10,9 +10,9 @@ export class FormationOcta extends Formation {
     super();
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.cells = new Array<Cell>(0);
     let self = this;
 
+    // Set ruleset
     let ruleset: Array<( cell: Cell ) => State> = [
         function( cell: Cell ): State {
           if (cell.isAlive() && cell.numOfAliveNeighbours() < 2)
@@ -31,23 +31,27 @@ export class FormationOcta extends Formation {
         }
       ];
 
-    let deltas: Array<Array<number>> = [[-1, -1], [ 0, -1], [1, -1], [-1,  0]];
+    // Initialize cell array
+    this.cells = new Array<Cell>(0);
+    for (let i = 0; i < sizeX * sizeY; ++i)
+      this.cells.push(new Cell(State.Dead, ruleset));
+
+    // Link neighbours
+    let deltas: Array<Array<number>> = [
+      [-1, -1], [ 0, -1], [ 1, -1],
+      [-1,  0]];
     for (let y = 0; y < sizeY; ++y)
       for (let x = 0; x < sizeX; ++x) {
-        this.cells.push(new Cell(State.Dead, ruleset));
         deltas.forEach(
           function( delta ): void {
-            if (self.exists(x + delta[0], y + delta[1]))
-              self.lookup(x, y).addNeightbour(self.lookup(x + delta[0], y + delta[1]));
+            self.lookup(x, y).addNeightbour(self.lookup(x + delta[0], y + delta[1]));
           });
         }
   }
 
-  exists( x: number, y: number ): boolean {
-    return 0 <= x && this.sizeX > x && 0 <= y && this.sizeY > y;
-  }
-
   lookup( x: number, y: number ): Cell {
+    x = ((x % this.sizeX) + this.sizeX) % this.sizeX;
+    y = ((y % this.sizeY) + this.sizeY) % this.sizeY;
     return this.cells[y * this.sizeX + x];
   }
 
