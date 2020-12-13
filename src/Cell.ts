@@ -4,32 +4,46 @@ export enum State {
 
 export class Cell {
   neighbours: Array<Cell>;
-  ruleset: Array<( currentState: State, neighbours: Array<Cell> ) => State>;
+  ruleset: Array<( cell: Cell ) => State>;
   currentState : State;
   nextState: State;
 
-  constructor( state: State, ruleset: Array<( currentState: State, neighbours: Array<Cell> ) => State> ) {
+  constructor( state: State, ruleset: Array<( cell: Cell ) => State> ) {
     this.currentState = state;
     this.nextState = state;
     this.ruleset = ruleset;
     this.neighbours = [];
   }
 
-  addNeightbour( neighbour: Cell ) {
+  addNeightbour( neighbour: Cell ): void {
     this.neighbours.push(neighbour);
     neighbour.neighbours.push(this);
   }
 
-  advanceState() {
+  advanceState(): void {
     this.currentState = this.nextState;
   }
 
-  updateState() {
-    let me: Cell = this;
+  isAlive() : boolean {
+    return this.currentState == State.Alive;
+  }
+
+  updateState(): void {
+    let self: Cell = this;
 
     this.ruleset.forEach(
-      function( rule: ( currentState: State, neighbours: Array<Cell> ) => State ): void {
-        me.nextState = rule(me.currentState, me.neighbours);
-      })
+      function( rule: ( cell: Cell ) => State ): void {
+        self.nextState = rule(self);
+      });
+  }
+
+  numOfAliveNeighbours(): number {
+    let cnt: number = 0;
+    this.neighbours.forEach(
+      function(neightbour): void {
+        if (neightbour.isAlive())
+          ++cnt;
+      });
+    return cnt;
   }
 }

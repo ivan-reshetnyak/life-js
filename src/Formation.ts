@@ -1,5 +1,8 @@
 export class Formation {
-  render() {
-    console.log("This formation does not support rendering!\n");
+  render(): string {
+    return "<p>This formation does not support rendering!</p>";
+  }
+
+  update(): void {
   }
 }
